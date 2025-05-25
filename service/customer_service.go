@@ -23,7 +23,7 @@ func NewCustomerService(r repository.CustomerRepository) CustomerService {
 }
 
 func (s *customerService) CreateCustomer(c entity.Customer) error {
-	if s.repo.IsIdExist(c.CustomerId) {
+	if s.repo.IsIdExist(c.Customer_Id) {
 		return errors.New("Customer ID already exist")
 	}
 	return s.repo.Create(c)

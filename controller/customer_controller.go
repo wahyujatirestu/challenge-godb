@@ -62,7 +62,7 @@ func (s *CustomerController) createCustomer(scanner *bufio.Scanner) {
 		fmt.Println("Invalid ID")
 		return
 	}
-	c.CustomerId = id
+	c.Customer_Id = id
 
 	fmt.Print("Enter Name : ")
 	scanner.Scan()
@@ -87,7 +87,7 @@ func (s *CustomerController) createCustomer(scanner *bufio.Scanner) {
 func (s *CustomerController) viewAllCustomers() {
 	customers, _ := s.service.GetAllCustomers()
 	for _, c := range customers {
-		fmt.Printf("ID: %d, Name: %s, Phone: %s, Address: %s\n", c.CustomerId, c.Name, c.Phone, c.Address)
+		fmt.Printf("ID: %d, Name: %s, Phone: %s, Address: %s\n", c.Customer_Id, c.Name, c.Phone, c.Address)
 	}
 }
 
@@ -105,7 +105,7 @@ func (s *CustomerController) viewCustomerByID(scanner *bufio.Scanner) {
 	if err != nil {
 		fmt.Println(err)
 	} else {
-		fmt.Printf("ID: %d\nName: %s\nPhone: %s\nAddress: %s\n", c.CustomerId, c.Name, c.Phone, c.Address)
+		fmt.Printf("ID: %d\nName: %s\nPhone: %s\nAddress: %s\n", c.Customer_Id, c.Name, c.Phone, c.Address)
 	}
 }
 
@@ -119,7 +119,7 @@ func (s *CustomerController) updateCustomer(scanner *bufio.Scanner) {
 		fmt.Println("Invalid ID")
 		return
 	}
-	c.CustomerId = id
+	c.Customer_Id = id
 
 	fmt.Print("New Name: ")
 	scanner.Scan()

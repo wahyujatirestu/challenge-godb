@@ -5,6 +5,6 @@ type Service struct {
 	Service_Name string
 	Unit 		 string
 	Price		 int
-	CreatedAt	 string
-	UpdatedAt	 string
+	Created_At	 string
+	Updated_At	 string
 }

@@ -1,10 +1,10 @@
 package entity
 
 type Customer struct {
-	CustomerId int
+	Customer_Id int
 	Name       string
 	Phone 	   string
 	Address	   string
-	CreatedAt  string
-	UpdatedAt  string
+	Created_At  string
+	Updated_At  string
 }

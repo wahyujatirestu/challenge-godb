@@ -42,7 +42,7 @@ func (r *serviceRepo) GetAll() ([]entity.Service, error) {
 
 	for rows.Next() {
 		var s entity.Service
-		err := rows.Scan(&s.Service_Id, &s.Service_Name, &s.Unit, &s.Price, &s.CreatedAt, &s.UpdatedAt)
+		err := rows.Scan(&s.Service_Id, &s.Service_Name, &s.Unit, &s.Price, &s.Created_At, &s.Updated_At)
 
 		if err != nil {
 			return nil, err
@@ -58,7 +58,7 @@ func (r *serviceRepo) GetAll() ([]entity.Service, error) {
 func (r *serviceRepo) GetById(id int) (entity.Service, error) {
 	var s entity.Service
 
-	err := r.db.QueryRow(`SELECT service_id, service_name, unit, price, created_at, updated_at FROM service WHERE service_id = $1`, id).Scan(&s.Service_Id, &s.Service_Name, &s.Unit, &s.Price, &s.CreatedAt, &s.UpdatedAt)
+	err := r.db.QueryRow(`SELECT service_id, service_name, unit, price, created_at, updated_at FROM service WHERE service_id = $1`, id).Scan(&s.Service_Id, &s.Service_Name, &s.Unit, &s.Price, &s.Created_At, &s.Updated_At)
 	
 	if err != nil {
 		return s, errors.New("Service ID Not Found")

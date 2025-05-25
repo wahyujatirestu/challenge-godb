@@ -25,7 +25,7 @@ func NewCustomerRepo(db *sql.DB) CustomerRepository {
 }
 
 func (r *customerRepo) Create(c entity.Customer) error {
-	_, err := r.db.Exec("INSERT INTO customer(customer_id, name, phone, address) VALUES($1, $2, $3, $4)", c.CustomerId, c.Name, c.Phone, c.Address)
+	_, err := r.db.Exec("INSERT INTO customer(customer_id, name, phone, address) VALUES($1, $2, $3, $4)", c.Customer_Id, c.Name, c.Phone, c.Address)
 	return err
 }
 
@@ -42,7 +42,7 @@ func (r *customerRepo) FindAll() ([]entity.Customer, error) {
 
 	for rows.Next() {
 		var c entity.Customer
-		err := rows.Scan(&c.CustomerId, &c.Name, &c.Phone, &c.Address, &c.CreatedAt, &c.UpdatedAt)
+		err := rows.Scan(&c.Customer_Id, &c.Name, &c.Phone, &c.Address, &c.Created_At, &c.Updated_At)
 		if err != nil {
 			return nil, err
 		}
@@ -59,7 +59,7 @@ func (r *customerRepo) FindById(id int) (entity.Customer, error) {
 	err := r.db.QueryRow(`
 		SELECT customer_id, name, phone, address, created_at, updated_at 
 		FROM customer WHERE customer_id = $1`, id).
-		Scan(&c.CustomerId, &c.Name, &c.Phone, &c.Address, &c.CreatedAt, &c.UpdatedAt)
+		Scan(&c.Customer_Id, &c.Name, &c.Phone, &c.Address, &c.Created_At, &c.Updated_At)
 
 	if err != nil {
 		return c, errors.New("Customer not found")
@@ -71,7 +71,7 @@ func (r *customerRepo) FindById(id int) (entity.Customer, error) {
 
 
 func (r *customerRepo) Update(c entity.Customer) error {
-	result, err := r.db.Exec("UPDATE customer SET name=$1, phone=$2, address=$3, updated_at=CURRENT_TIMESTAMP WHERE customer_id=$4", c.Name, c.Phone, c.Address, c.CustomerId)
+	result, err := r.db.Exec("UPDATE customer SET name=$1, phone=$2, address=$3, updated_at=CURRENT_TIMESTAMP WHERE customer_id=$4", c.Name, c.Phone, c.Address, c.Customer_Id)
 	rowsAffected, _ := result.RowsAffected() 
 	
 	if rowsAffected == 0 {

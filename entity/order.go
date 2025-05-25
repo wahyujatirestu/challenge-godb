@@ -3,18 +3,18 @@ package entity
 import "time"
 
 type Order struct {
-	OrderId			int
-	CustomerId		int
-	OrderDate		time.Time
-	CompletionDate 	*time.Time
-	ReceivedBy	   	string
-	CreatedAt		string
-	UpdatedAt		string
+	Order_Id			int
+	Customer_Id		int
+	Order_Date		time.Time
+	Completion_Date 	*time.Time
+	Received_By	   	string
+	Created_At		string
+	Updated_At		string
 }
 
 type OrderDetail struct {
-	OrderDetailId	int
-	OrderId			int
-	ServiceId		int
+	Order_Detail_Id	int
+	Order_Id		int
+	Service_Id		int
 	Qty				int
 }
