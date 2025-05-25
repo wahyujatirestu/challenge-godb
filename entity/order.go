@@ -13,8 +13,8 @@ type Order struct {
 }
 
 type OrderDetail struct {
-	OrderDetail	int
-	OrderId		int
-	ServiceId	int
-	Qty			int
+	OrderDetailId	int
+	OrderId			int
+	ServiceId		int
+	Qty				int
 }
