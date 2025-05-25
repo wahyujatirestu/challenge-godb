@@ -20,6 +20,10 @@ func main() {
 	serviceService := service.NewServiceService(serviceRepo)
 	serviceController := controller.NewServiceController(serviceService)
 
+	orderRepo := repository.NewOrderRepository(config.ConnectDb())
+	orderService := service.NewOrderService(orderRepo)
+	orderController := controller.NewOrderController(orderService)
+
 	
 	for {
 		fmt.Println("\n-----Enigma Laundry Center----- ")
@@ -38,7 +42,7 @@ func main() {
 			case 2:
 				serviceController.MenuService()
 			case 3:
-				
+				orderController.MenuOrder()
 			case 4: 
 				fmt.Println("Exiting...")
 				return
