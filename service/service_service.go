@@ -24,7 +24,7 @@ func NewServiceService(r repository.ServiceRepository) ServiceService {
 
 func (s *serviceService) CreateService(service entity.Service) error {
 	if s.repo.IsIdExist(service.Service_Id){
-		return errors.New("Service ID already exist")
+		return errors.New("Service ID already exist. Please enter a different ID.")
 	}
 
 	return s.repo.Create(service)
@@ -39,9 +39,21 @@ func (s *serviceService) GetServiceById(id int) (entity.Service, error) {
 }
 
 func (s *serviceService) UpdateService(service entity.Service) error {
+	if !s.repo.IsIdExist(service.Service_Id) {
+		return errors.New("Service not found.")
+	}
 	return s.repo.Update(service)
 }
 
 func (s *serviceService) DeleteService(id int) error {
+	if !s.repo.IsIdExist(id) {
+		return errors.New("Service ID not found. Please enter a different ID.")
+	}
+
+	if s.repo.IsIdUsedInOrders(id) {
+		return errors.New("Service ID is being used in orders. Please delete the order first.")
+	}
+
 	return s.repo.Delete(id)
 }
+

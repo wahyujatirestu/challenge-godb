@@ -55,122 +55,127 @@ func (c *ServiceController) MenuService() {
 }
 
 
-func (c *ServiceController) createService(scanner *bufio.Scanner)  {
+func (c *ServiceController) createService(scanner *bufio.Scanner) {
 	var C entity.Service
 
-	fmt.Print("Enter Service ID : ")
+	fmt.Print("Enter Service ID: ")
 	scanner.Scan()
 	idStr := scanner.Text()
 	id, err := strconv.Atoi(idStr)
-
 	if err != nil {
 		fmt.Println("Invalid ID")
+		return
 	}
-
 	C.Service_Id = id
 
-	fmt.Print("Enter Service Name : ")
+	fmt.Print("Enter Service Name: ")
 	scanner.Scan()
 	C.Service_Name = scanner.Text()
 
-	fmt.Print("Enter Unit : ")
+	fmt.Print("Enter Unit: ")
 	scanner.Scan()
 	C.Unit = scanner.Text()
 
-	fmt.Print("Enter Price : ")
+	fmt.Print("Enter Price: ")
 	scanner.Scan()
-	idString := scanner.Text()
-	price, err := strconv.Atoi(idString)
-
+	priceStr := scanner.Text()
+	price, err := strconv.Atoi(priceStr)
 	if err != nil {
 		fmt.Println("Invalid Price")
+		return
 	}
-
 	C.Price = price
 
 	err = c.service.CreateService(C)
 	if err != nil {
-		fmt.Println(err)
+		if err.Error() == "Service ID already exist" {
+			fmt.Println("Service ID already exists. Please enter a different ID.")
+		} else {
+			fmt.Println("Failed to create service:", err)
+		}
 		return
-	} else {
-		fmt.Println("Service Created Successfully")
 	}
 
+	fmt.Println("Service Created Successfully.")
 }
 
-func (c *ServiceController) viewAllService()  {
-	service, _ := c.service.GetAllService()
-	for _, C := range service {
-		fmt.Printf("Service ID : %d, Service Name : %s, Unit : %s, Price : %d\n", C.Service_Id, C.Service_Name, C.Unit, C.Price)
+func (c *ServiceController) viewAllService() {
+	services, err := c.service.GetAllService()
+	if err != nil {
+		fmt.Println("Failed to fetch service list:", err)
+		return
+	}
+	for _, s := range services {
+		fmt.Printf("Service ID: %d, Name: %s, Unit: %s, Price: %d\n", s.Service_Id, s.Service_Name, s.Unit, s.Price)
 	}
 }
 
-func (c *ServiceController) viewServiceById(scanner *bufio.Scanner)  {
-	fmt.Println("Enter Service ID : ")
+func (c *ServiceController) viewServiceById(scanner *bufio.Scanner) {
+	fmt.Print("Enter Service ID: ")
 	scanner.Scan()
 	idStr := scanner.Text()
 	id, err := strconv.Atoi(idStr)
-
 	if err != nil {
 		fmt.Println("Invalid ID")
 		return
 	}
+
 	s, err := c.service.GetServiceById(id)
 	if err != nil {
-		fmt.Println(err)
-	} else {
-		fmt.Printf("Service ID : %d, Service Name : %s, Unit : %s, Price : %d", s.Service_Id, s.Service_Name, s.Unit, s.Price)
+		fmt.Println("Service not found.")
+		return
 	}
+	fmt.Printf("Service ID: %d, Name: %s, Unit: %s, Price: %d\n", s.Service_Id, s.Service_Name, s.Unit, s.Price)
 }
 
-func (c *ServiceController) updateService(scanner *bufio.Scanner)  {
+func (c *ServiceController) updateService(scanner *bufio.Scanner) {
 	var s entity.Service
-	fmt.Print("Enter Service ID : ")
+	fmt.Print("Enter Service ID: ")
 	scanner.Scan()
 	idStr := scanner.Text()
 	id, err := strconv.Atoi(idStr)
-
 	if err != nil {
 		fmt.Println("Invalid ID")
 		return
 	}
 	s.Service_Id = id
 
-	fmt.Print("Enter New Name : ")
+	fmt.Print("Enter New Name: ")
 	scanner.Scan()
 	s.Service_Name = scanner.Text()
 
-	fmt.Print("Enter New Unit : ")
+	fmt.Print("Enter New Unit: ")
 	scanner.Scan()
 	s.Unit = scanner.Text()
 
-	fmt.Print("Enter New Price : ")
+	fmt.Print("Enter New Price: ")
 	scanner.Scan()
-	price := scanner.Text()
-	priceInt, err := strconv.Atoi(price)
-
+	priceStr := scanner.Text()
+	price, err := strconv.Atoi(priceStr)
 	if err != nil {
 		fmt.Println("Invalid Price")
 		return
-
 	}
-	s.Price = priceInt
+	s.Price = price
 
 	err = c.service.UpdateService(s)
 	if err != nil {
-		fmt.Println(err)
-	} else {
-		fmt.Println("Service Updated Successfully")
+		if err.Error() == "Service not found." {
+			fmt.Println("Service not found.")
+		} else {
+			fmt.Println("Failed to update service:", err)
+		}
+		return
 	}
 
+	fmt.Println("Service Updated Successfully.")
 }
 
 func (c *ServiceController) deleteService(scanner *bufio.Scanner) {
-	fmt.Print("Service ID to delete : ")
+	fmt.Print("Service ID to delete: ")
 	scanner.Scan()
 	idStr := scanner.Text()
 	id, err := strconv.Atoi(idStr)
-
 	if err != nil {
 		fmt.Println("Invalid ID")
 		return
@@ -179,7 +184,8 @@ func (c *ServiceController) deleteService(scanner *bufio.Scanner) {
 	err = c.service.DeleteService(id)
 	if err != nil {
 		fmt.Println(err)
-	} else {
-		fmt.Println("Service Deleted Successfully")
+		return
 	}
+
+	fmt.Println("Service Deleted Successfully.")
 }

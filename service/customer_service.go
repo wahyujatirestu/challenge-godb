@@ -8,8 +8,8 @@ import (
 
 type CustomerService interface {
 	CreateCustomer(c entity.Customer) error
-	GetAllCustomers()([]entity.Customer, error)
-	GetCustomerById(id int)(entity.Customer, error)
+	GetAllCustomers() ([]entity.Customer, error)
+	GetCustomerById(id int) (entity.Customer, error)
 	UpdateCustomer(c entity.Customer) error
 	DeleteCustomer(id int) error
 }
@@ -24,7 +24,7 @@ func NewCustomerService(r repository.CustomerRepository) CustomerService {
 
 func (s *customerService) CreateCustomer(c entity.Customer) error {
 	if s.repo.IsIdExist(c.Customer_Id) {
-		return errors.New("Customer ID already exist")
+		return errors.New("Customer ID already exist. Please enter a different ID")
 	}
 	return s.repo.Create(c)
 }

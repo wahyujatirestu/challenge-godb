@@ -31,11 +31,9 @@ func (r *customerRepo) Create(c entity.Customer) error {
 
 func (r *customerRepo) FindAll() ([]entity.Customer, error) {
 	rows, err := r.db.Query("SELECT customer_id, name, phone, address, created_at, updated_at FROM customer")
-	
 	if err != nil {
 		return nil, err
 	}
-
 	defer rows.Close()
 
 	var customers []entity.Customer
@@ -46,7 +44,6 @@ func (r *customerRepo) FindAll() ([]entity.Customer, error) {
 		if err != nil {
 			return nil, err
 		}
-
 		customers = append(customers, c)
 	}
 
@@ -55,7 +52,6 @@ func (r *customerRepo) FindAll() ([]entity.Customer, error) {
 
 func (r *customerRepo) FindById(id int) (entity.Customer, error) {
 	var c entity.Customer
-
 	err := r.db.QueryRow(`
 		SELECT customer_id, name, phone, address, created_at, updated_at 
 		FROM customer WHERE customer_id = $1`, id).
@@ -68,12 +64,10 @@ func (r *customerRepo) FindById(id int) (entity.Customer, error) {
 	return c, nil
 }
 
-
-
 func (r *customerRepo) Update(c entity.Customer) error {
 	result, err := r.db.Exec("UPDATE customer SET name=$1, phone=$2, address=$3, updated_at=CURRENT_TIMESTAMP WHERE customer_id=$4", c.Name, c.Phone, c.Address, c.Customer_Id)
 	rowsAffected, _ := result.RowsAffected() 
-	
+
 	if rowsAffected == 0 {
 		return errors.New("Customer Not Found")
 	}
@@ -97,12 +91,12 @@ func (r *customerRepo) Delete(id int) error {
 
 func (r *customerRepo) IsIdExist(id int) bool {
 	var exist bool
-	r.db.QueryRow("SELECT EXIST(SELECT 1 FROM customer WHERE customer_id=$1)", id).Scan(&exist)
+	r.db.QueryRow("SELECT EXISTS(SELECT 1 FROM customer WHERE customer_id=$1)", id).Scan(&exist)
 	return exist
 }
 
 func (r *customerRepo) IsIdUsedInOrders(id int) bool {
 	var exist bool
-	r.db.QueryRow("SELECT EXIST(SELECT 1 FROM \"order\" WHERE customer_id=$1)", id).Scan(&exist)
+	r.db.QueryRow("SELECT EXISTS(SELECT 1 FROM \"order\" WHERE customer_id=$1)", id).Scan(&exist)
 	return exist
 }

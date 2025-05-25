@@ -54,7 +54,7 @@ func (s *CustomerController) MenuCustomer() {
 
 func (s *CustomerController) createCustomer(scanner *bufio.Scanner) {
 	var c entity.Customer
-	fmt.Print("Enter Customer ID : ")
+	fmt.Print("Enter Customer ID: ")
 	scanner.Scan()
 	idStr := scanner.Text()
 	id, err := strconv.Atoi(idStr)
@@ -64,15 +64,15 @@ func (s *CustomerController) createCustomer(scanner *bufio.Scanner) {
 	}
 	c.Customer_Id = id
 
-	fmt.Print("Enter Name : ")
+	fmt.Print("Enter Name: ")
 	scanner.Scan()
 	c.Name = scanner.Text()
 
-	fmt.Print("Enter Phone : ")
+	fmt.Print("Enter Phone: ")
 	scanner.Scan()
 	c.Phone = scanner.Text()
 
-	fmt.Print("Enter Address : ")
+	fmt.Print("Enter Address: ")
 	scanner.Scan()
 	c.Address = scanner.Text()
 
@@ -103,7 +103,7 @@ func (s *CustomerController) viewCustomerByID(scanner *bufio.Scanner) {
 
 	c, err := s.service.GetCustomerById(id)
 	if err != nil {
-		fmt.Println(err)
+		fmt.Println("Customer not found")
 	} else {
 		fmt.Printf("ID: %d\nName: %s\nPhone: %s\nAddress: %s\n", c.Customer_Id, c.Name, c.Phone, c.Address)
 	}
@@ -135,7 +135,11 @@ func (s *CustomerController) updateCustomer(scanner *bufio.Scanner) {
 
 	err = s.service.UpdateCustomer(c)
 	if err != nil {
-		fmt.Println(err)
+		if err.Error() == "Customer Not Found" {
+			fmt.Println("Customer not found")
+		} else {
+			fmt.Println(err)
+		}
 	} else {
 		fmt.Println("Customer updated successfully.")
 	}
@@ -153,7 +157,14 @@ func (s *CustomerController) deleteCustomer(scanner *bufio.Scanner) {
 
 	err = s.service.DeleteCustomer(id)
 	if err != nil {
-		fmt.Println(err)
+		switch err.Error() {
+		case "Customer ID Not Found":
+			fmt.Println("Customer ID not found. Please enter a different ID.")
+		case "Customer is used in orders. Please delete the order first":
+			fmt.Println("Customer ID is being used in orders. Please delete the order first.")
+		default:
+			fmt.Println(err)
+		}
 	} else {
 		fmt.Println("Customer deleted successfully.")
 	}

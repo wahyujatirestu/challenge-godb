@@ -99,18 +99,19 @@ func (r *serviceRepo) Delete(id int) error {
 
 
 func (r *serviceRepo) IsIdExist(id int) bool {
-	var exist bool
-
-	r.db.QueryRow("SELECT EXIST(SELECT 1 FROM service WHERE service_id=$1)", id).Scan(&exist)
-
-	return exist
+	var exists bool
+	err := r.db.QueryRow("SELECT EXISTS(SELECT 1 FROM service WHERE service_id=$1)", id).Scan(&exists)
+	if err != nil {
+		return false
+	}
+	return exists
 }
 
-
 func (r *serviceRepo) IsIdUsedInOrders(id int) bool {
-	var exist bool
-	
-	r.db.QueryRow("SELECT EXIST(SELECT 1 FROM order_detail WHERE service_id=$1)", id).Scan(&exist)
-
-	return exist
+	var exists bool
+	err := r.db.QueryRow("SELECT EXISTS(SELECT 1 FROM order_detail WHERE service_id=$1)", id).Scan(&exists)
+	if err != nil {
+		return false
+	}
+	return exists
 }
