@@ -16,6 +16,10 @@ func main() {
 	customerService := service.NewCustomerService(customerRepo)
 	customerController := controller.NewCustomerController(customerService)
 
+	serviceRepo := repository.NewServiceRepo(config.ConnectDb())
+	serviceService := service.NewServiceService(serviceRepo)
+	serviceController := controller.NewServiceController(serviceService)
+
 	
 	for {
 		fmt.Println("\n-----Enigma Laundry Center----- ")
@@ -32,7 +36,7 @@ func main() {
 			case 1:
 				customerController.MenuCustomer()
 			case 2:
-				
+				serviceController.MenuService()
 			case 3:
 				
 			case 4: 

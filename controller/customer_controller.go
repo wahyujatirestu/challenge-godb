@@ -21,14 +21,14 @@ func (s *CustomerController) MenuCustomer() {
 	scanner := bufio.NewScanner(os.Stdin)
 
 	for {
-		fmt.Println("\n--- CUSTOMER MENU ---")
+		fmt.Println("\n-----CUSTOMER MENU-----\n")
 		fmt.Println("1. Create Customer")
 		fmt.Println("2. View All Customers")
 		fmt.Println("3. View Customer By ID")
 		fmt.Println("4. Update Customer")
 		fmt.Println("5. Delete Customer")
 		fmt.Println("6. Back to Main Menu")
-		fmt.Print("Choose option: ")
+		fmt.Print("Choose an option: ")
 
 		scanner.Scan()
 		choice := scanner.Text()
@@ -54,7 +54,7 @@ func (s *CustomerController) MenuCustomer() {
 
 func (s *CustomerController) createCustomer(scanner *bufio.Scanner) {
 	var c entity.Customer
-	fmt.Print("Customer ID: ")
+	fmt.Print("Enter Customer ID : ")
 	scanner.Scan()
 	idStr := scanner.Text()
 	id, err := strconv.Atoi(idStr)
@@ -64,15 +64,15 @@ func (s *CustomerController) createCustomer(scanner *bufio.Scanner) {
 	}
 	c.CustomerId = id
 
-	fmt.Print("Name: ")
+	fmt.Print("Enter Name : ")
 	scanner.Scan()
 	c.Name = scanner.Text()
 
-	fmt.Print("Phone: ")
+	fmt.Print("Enter Phone : ")
 	scanner.Scan()
 	c.Phone = scanner.Text()
 
-	fmt.Print("Address: ")
+	fmt.Print("Enter Address : ")
 	scanner.Scan()
 	c.Address = scanner.Text()
 
