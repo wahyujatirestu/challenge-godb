@@ -23,8 +23,8 @@ func (c *ServiceController) MenuService() {
 	for {
 		fmt.Println("\n-----SERVICE MENU-----\n")
 		fmt.Println("1. Create Service")
-		fmt.Println("2. View All Service")
-		fmt.Println("3. View Service By ID")
+		fmt.Println("2. View Of List Service")
+		fmt.Println("3. View Details Service By ID")
 		fmt.Println("4. Update Service")
 		fmt.Println("5. Delete Service")
 		fmt.Println("6. Back to Main Menu")

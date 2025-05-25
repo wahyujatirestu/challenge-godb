@@ -23,8 +23,8 @@ func (s *CustomerController) MenuCustomer() {
 	for {
 		fmt.Println("\n-----CUSTOMER MENU-----\n")
 		fmt.Println("1. Create Customer")
-		fmt.Println("2. View All Customers")
-		fmt.Println("3. View Customer By ID")
+		fmt.Println("2. View Of List Customers")
+		fmt.Println("3. View Details Customer By ID")
 		fmt.Println("4. Update Customer")
 		fmt.Println("5. Delete Customer")
 		fmt.Println("6. Back to Main Menu")
