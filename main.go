@@ -9,18 +9,18 @@ import (
 )
 
 func main() {
-	config.ConnectDb()
-	defer config.ConnectDb().Close()
+	db := config.ConnectDb()
+	defer db.Close()
 
-	customerRepo := repository.NewCustomerRepo(config.ConnectDb())
+	customerRepo := repository.NewCustomerRepo(db)
 	customerService := service.NewCustomerService(customerRepo)
 	customerController := controller.NewCustomerController(customerService)
 
-	serviceRepo := repository.NewServiceRepo(config.ConnectDb())
+	serviceRepo := repository.NewServiceRepo(db)
 	serviceService := service.NewServiceService(serviceRepo)
 	serviceController := controller.NewServiceController(serviceService)
 
-	orderRepo := repository.NewOrderRepository(config.ConnectDb())
+	orderRepo := repository.NewOrderRepository(db)
 	orderService := service.NewOrderService(orderRepo)
 	orderController := controller.NewOrderController(orderService)
 

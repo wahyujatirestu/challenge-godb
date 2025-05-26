@@ -79,7 +79,7 @@ func (r *customerRepo) Delete(id int) error {
 		return errors.New("Customer is used in orders. Please delete the order first")
 	}
 
-	result, err := r.db.Exec("DELETE FROM customer WHERE customer_id=$1", id)
+	result, err := r.db.Exec("DELETE FROM customer WHERE customer_id=$1 ", id)
 	rowsAffected, _ := result.RowsAffected()
 
 	if rowsAffected == 0 {
@@ -96,7 +96,12 @@ func (r *customerRepo) IsIdExist(id int) bool {
 }
 
 func (r *customerRepo) IsIdUsedInOrders(id int) bool {
-	var exist bool
-	r.db.QueryRow("SELECT EXISTS(SELECT 1 FROM \"order\" WHERE customer_id=$1)", id).Scan(&exist)
-	return exist
+	var exists bool
+	query := `SELECT EXISTS(SELECT 1 FROM "order" WHERE customer_id=$1)`
+	err := r.db.QueryRow(query, id).Scan(&exists)
+	if err != nil {
+		return false
+	}
+	return exists
 }
+

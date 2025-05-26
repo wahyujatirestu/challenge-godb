@@ -42,5 +42,12 @@ func (s *customerService) UpdateCustomer(c entity.Customer) error {
 }
 
 func (s *customerService) DeleteCustomer(id int) error {
+	if !s.repo.IsIdExist(id) {
+		return errors.New("Customer not found")
+	} 
+	if s.repo.IsIdUsedInOrders(id) {
+		return errors.New("Customer ID is being used in orders. Please complete the orders first.")
+	}
+
 	return s.repo.Delete(id)
 }

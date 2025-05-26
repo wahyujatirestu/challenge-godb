@@ -78,33 +78,38 @@ func (c *OrderController) createOrder(scanner *bufio.Scanner) {
 
 	var details []entity.OrderDetail
 	for {
-		var d entity.OrderDetail
-		d.Order_Id = o.Order_Id
+		var detail entity.OrderDetail
+		detail.Order_Id = o.Order_Id
 
 		fmt.Print("Enter Service ID (0 to finish): ")
 		scanner.Scan()
-		serviceIdStr := scanner.Text()
-		serviceId, err := strconv.Atoi(serviceIdStr)
-		if err != nil || serviceId == 0 {
+		serviceIDStr := scanner.Text()
+		serviceID, err := strconv.Atoi(serviceIDStr)
+		if err != nil {
+			fmt.Println("Invalid Service ID. Please enter a number.")
+			continue
+		}
+		if serviceID == 0 {
 			break
 		}
-		d.Service_Id = serviceId
+		detail.Service_Id = serviceID
 
 		fmt.Print("Enter Quantity: ")
 		scanner.Scan()
 		qtyStr := scanner.Text()
 		qty, err := strconv.Atoi(qtyStr)
 		if err != nil {
-			fmt.Println("Invalid quantity")
+			fmt.Println("Invalid Quantity. Please enter a number.")
 			continue
 		}
-		d.Qty = qty
-		details = append(details, d)
+		detail.Qty = qty
+
+		details = append(details, detail)
 	}
 
 	err = c.order.CreateOrder(o, details)
 	if err != nil {
-		fmt.Println(err)
+		fmt.Println("Failed to create order:", err.Error())
 	} else {
 		fmt.Println("Order created successfully.")
 	}
